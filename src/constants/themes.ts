@@ -3,6 +3,6 @@ export const THEME = {
     main: "#ffff00",
   },
   secondary: {
-    main: "#800080",
+    main: "#1544ed",
   },
 };

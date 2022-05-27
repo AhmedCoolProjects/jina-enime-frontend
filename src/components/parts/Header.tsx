@@ -24,48 +24,31 @@ export function Header() {
   };
 
   return (
-    <Paper className="w-full sticky top-0 z-10 p-3 items-center justify-between flex flex-row">
+    <Paper className="w-full sticky top-2 rounded-full z-10 py-3 px-4 items-center justify-between flex flex-row">
       <Link href="/" passHref>
         <div className="flex cursor-pointer flex-row items-center space-x-2">
-          {/* <div className="w-10 h-10 sm:w-12 sm:h-12 relative">
-            <Image
-              src="/images/logo.png"
-              className="rounded-full"
-              objectFit="cover"
-              alt="logo"
-              layout="fill"
-            />
-          </div> */}
-          <h1 className="text-xl sm:text-2xl font-bold">Ahmed Bargady</h1>
+          <Image
+            src="/favicon.ico"
+            className="rounded-full"
+            objectFit="cover"
+            alt="logo"
+            width={40}
+            height={40}
+          />
         </div>
       </Link>
       <div className="flex flex-row items-center space-x-2">
-        <div
-          className="hidden md:flex
-        flex-row items-center space-x-4"
-        >
-          {/* <Link href="/#bio" passHref>
-            <Button color={isDark ? "secondary" : "primary"}>Bio</Button>
-          </Link>
-          <Link href="/projects" passHref>
-            <Button color={isDark ? "secondary" : "primary"}>Projects</Button>
-          </Link>
-          <Link href="/certificates" passHref>
-            <Button color={isDark ? "secondary" : "primary"}>
-              Certificates
-            </Button>
-          </Link> */}
-          {/* <Link href="/learning-path" passHref>
-            <Button color={isDark ? "secondary" : "primary"}>Learning Path</Button>
-          </Link> */}
-        </div>
         <div
           style={{
             display: "inline-block",
           }}
         >
           <IconButton onClick={toggleTheme}>
-            {isDark ? <BsSun color="yellow" /> : <BsMoonStars color="purple" />}
+            {isDark ? (
+              <BsSun color="#ffff00" />
+            ) : (
+              <BsMoonStars color="#1544ed" />
+            )}
           </IconButton>
         </div>
         <IconButton
@@ -76,7 +59,7 @@ export function Header() {
           onClick={handleOpenMenu}
           id="menu-button-id"
         >
-          <FiMenu color={isDark ? "yellow" : "purple"} />
+          <FiMenu color={isDark ? "#ffff00" : "#1544ed"} />
         </IconButton>
       </div>
       {/* <PopMenu

@@ -1,9 +1,13 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, IconButton } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import { MdPostAdd } from "react-icons/md";
-import { ReclamationCard, ReclamationDialog } from "../src/components";
+import {
+  CarouselHeader,
+  ReclamationCard,
+  ReclamationDialog,
+} from "../src/components";
 import { useAppSelector } from "../src/store";
 
 const Home: NextPage = () => {
@@ -20,25 +24,68 @@ const Home: NextPage = () => {
       </Head>
       <div className="py-5">
         {/* ajouter une reclamation */}
-        <Button
-          size="large"
-          variant="outlined"
-          endIcon={<MdPostAdd />}
+        <IconButton
           color={isDark ? "primary" : "secondary"}
           onClick={() => setOpen(true)}
+          size="large"
+          style={{
+            border: "0.2px solid",
+            borderColor: isDark ? "primary" : "secondary",
+          }}
         >
-          Ajouter une réclamation
-        </Button>
+          <MdPostAdd />
+        </IconButton>
+        {/* Carousel */}
+        <CarouselHeader />
         {/* history des reclamation */}
         <div className="flex py-4 flex-col items-center">
           <h1 className="text-3xl font-semibold">Mes réclamations</h1>
-          <hr className="h-[0.5px] opacity-80 w-full my-3" />
+          <hr className="h-[0.5px] opacity-80 w-full my-5" />
           <Grid container spacing={3}>
-            {[1, 2, 3, 4, 5].map((item) => (
-              <Grid item xs={12} sm={6} md={4} key={item}>
-                <ReclamationCard />
-              </Grid>
-            ))}
+            <Grid item xs={12} sm={6} md={4}>
+              <ReclamationCard
+                title="Réclamations"
+                description="this is my description for réclamations this is my description for réclamations"
+                status="In Progress"
+                worker_id="1"
+                date="2020-05-05"
+                image="/plumber_problem.jpg"
+                type="Réclamation"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <ReclamationCard
+                title="Réclamations"
+                description="this is my description for réclamations this is my description for réclamations"
+                status="Completed"
+                worker_id="1"
+                date="2020-05-05"
+                image="/plumber_problem.jpg"
+                type="Réclamation"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <ReclamationCard
+                title="Réclamations"
+                description="this is my description for réclamations this is my description for réclamations"
+                status="Pending"
+                worker_id="1"
+                date="2020-05-05"
+                image="/plumber_problem.jpg"
+                type="Réclamation"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <ReclamationCard
+                title="Réclamations"
+                description="this is my description for réclamations this is my description for réclamations"
+                status="Refused"
+                worker_id="1"
+                date="2020-05-05"
+                image="/plumber_problem.jpg"
+                type="Réclamation"
+              />
+            </Grid>
           </Grid>
         </div>
       </div>

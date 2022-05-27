@@ -1,3 +1,6 @@
+// @ts-ignore
+// @ts-nocheck
+
 import {
   Button,
   Dialog,
@@ -14,107 +17,145 @@ import {
   IconButton,
 } from "@mui/material";
 import { FiUploadCloud } from "react-icons/fi";
-
+import { useState } from "react";
+import { useAppSelector } from "../../store";
 type props = {
   open: boolean;
   onClose: () => void;
 };
 
+type complaintDataProps = {
+  title: string;
+  description: string;
+  image: string;
+  type: string;
+};
+
 export function ReclamationDialog(props: props) {
+  const isDark = useAppSelector((state) => state.mode.isDark);
   const { open, onClose } = props;
+  const [complaintData, setComplaintData] = useState<complaintDataProps>({
+    title: "",
+    description: "",
+    image: "",
+    type: "",
+  });
+  const [file, setFile] = useState<File>();
+  const onCloseDialog = () => {
+    onClose();
+    setComplaintData({
+      title: "",
+      description: "",
+      image: "",
+      type: "",
+    });
+    setFile(undefined);
+  };
 
   return (
     <div className="w-full">
-      <Dialog open={open} onClose={onClose}>
+      <Dialog open={open} onClose={onCloseDialog}>
         <DialogTitle>Ajouter votre réclamation</DialogTitle>
         <DialogContent className="space-y-3">
-          <DialogContentText>Une réclamation.</DialogContentText>
+          <DialogContentText>
+            Remplissez le formulaire ci-dessous pour ajouter une réclamation. Et
+            nous vous contacterons dans les plus brefs délais pour traiter votre
+            demande.
+          </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
-            id="first_name"
-            label="First Name"
+            id="title"
+            label="Titre de la réclamation"
             type="text"
             fullWidth
+            color={isDark ? "primary" : "secondary"}
             variant="standard"
+            value={complaintData.title}
+            onChange={(e) =>
+              setComplaintData({ ...complaintData, title: e.target.value })
+            }
           />
           <TextField
             margin="dense"
-            id="last_name"
-            label="Last Name"
+            id="description"
+            label="Description de la réclamation"
             type="text"
             fullWidth
+            color={isDark ? "primary" : "secondary"}
             variant="standard"
+            style={{
+              marginBottom: 24,
+            }}
+            value={complaintData.description}
+            onChange={(e) =>
+              setComplaintData({
+                ...complaintData,
+                description: e.target.value,
+              })
+            }
           />
-          <TextField
-            margin="dense"
-            id="email"
-            label="Email"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            margin="dense"
-            id="linkedin"
-            label="Linkedin"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            margin="dense"
-            id="profession"
-            label="Profession"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          {/* input for image upload */}
+          <FormControl fullWidth>
+            <InputLabel
+              color={isDark ? "primary" : "secondary"}
+              id="type-complaint"
+            >
+              Type de réclamation
+            </InputLabel>
+            <Select
+              labelId="type-complaint"
+              label="Type de réclamation"
+              value={complaintData.type}
+              color={isDark ? "primary" : "secondary"}
+              onChange={(e) =>
+                setComplaintData({ ...complaintData, type: e.target.value })
+              }
+            >
+              <MenuItem value="Complaint">
+                Réclamation d&apos;un problème
+              </MenuItem>
+              <MenuItem value="Suggestion">
+                Suggestion d&apos;amélioration
+              </MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             margin="dense"
             id="image"
             label="Image"
             type="file"
+            color={isDark ? "primary" : "secondary"}
             fullWidth
             variant="standard"
+            onChange={(e) => setFile(e.target.files[0])}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton disabled={false}>
-                    <FiUploadCloud />
-                  </IconButton>
+                  <InputAdornment position="end">
+                    <IconButton
+                      // onClick={uploadFile}
+                      disabled={
+                        !complaintData.title ||
+                        !complaintData.description ||
+                        !complaintData.type ||
+                        !file
+                      }
+                    >
+                      <FiUploadCloud />
+                    </IconButton>
+                  </InputAdornment>
                 </InputAdornment>
               ),
             }}
           />
-          <FormControl fullWidth>
-            <InputLabel id="person-category">Category</InputLabel>
-            <Select labelId="person-category" label="Category">
-              <MenuItem value="board">Board</MenuItem>
-              <MenuItem value="member">Member</MenuItem>
-              <MenuItem value="guest">Guest</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel id="person-post">Post</InputLabel>
-            <Select labelId="person-post" label="Post">
-              <MenuItem value="prof">Prof</MenuItem>
-              <MenuItem value="student">Student</MenuItem>
-              <MenuItem value="laureate">Laureate</MenuItem>
-              <MenuItem value="other">Other</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel id="person-is-hiddent">Is Hidden</InputLabel>
-            <Select labelId="person-is-hiddent" label="Is Hidden">
-              <MenuItem value="false">NO</MenuItem>
-              <MenuItem value="true">YES</MenuItem>
-            </Select>
-          </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button>Cancel</Button>
+          <Button
+            color={isDark ? "primary" : "secondary"}
+            onClick={onCloseDialog}
+          >
+            Cancel
+          </Button>
 
           {/* {person.id && person.image && (
             <Button onClick={updatePerson}>Update Person</Button>
