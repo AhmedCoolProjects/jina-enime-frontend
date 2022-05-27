@@ -25,8 +25,8 @@ export function Layout(props: props) {
     const isDarkLocal = localStorage.getItem("isDark");
     if (isDarkLocal !== null && isDarkLocal !== `${isDark}`) {
       dispatch(changeModeAction());
-      console.log("appModeLocal", isDarkLocal);
-      console.log("appMode", isDark);
+      // console.log("appModeLocal", isDarkLocal);
+      // console.log("appMode", isDark);
     }
   });
 

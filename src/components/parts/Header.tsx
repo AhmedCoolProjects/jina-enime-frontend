@@ -51,16 +51,17 @@ export function Header() {
             )}
           </IconButton>
         </div>
-        <IconButton
-          className="md:hidden"
-          aria-controls={open ? "menu-id" : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
-          onClick={handleOpenMenu}
-          id="menu-button-id"
-        >
-          <FiMenu color={isDark ? "#ffff00" : "#1544ed"} />
-        </IconButton>
+        <div className="md:hidden">
+          <IconButton
+            aria-controls={open ? "menu-id" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleOpenMenu}
+            id="menu-button-id"
+          >
+            <FiMenu color={isDark ? "#ffff00" : "#1544ed"} />
+          </IconButton>
+        </div>
       </div>
       {/* <PopMenu
         anchorEl={anchorEl}
