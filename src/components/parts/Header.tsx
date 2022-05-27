@@ -24,7 +24,12 @@ export function Header() {
   };
 
   return (
-    <Paper className="w-full sticky top-2 rounded-full z-10 py-3 px-4 items-center justify-between flex flex-row">
+    <Paper
+      className="w-full sticky top-2 z-10 py-3 px-4 items-center justify-between flex flex-row"
+      style={{
+        borderRadius: 200,
+      }}
+    >
       <Link href="/" passHref>
         <div className="flex cursor-pointer flex-row items-center space-x-2">
           <Image
