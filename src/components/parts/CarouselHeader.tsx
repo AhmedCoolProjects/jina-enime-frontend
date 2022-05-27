@@ -141,10 +141,7 @@ function CarouselItem(props: carouselItemProps) {
     flex-row 
     "
     >
-      <div
-        className="relative w-1/2
-      "
-      >
+      <div className="relative w-1/2 ml-8 ">
         <h1 className="text-md sm:text-3xl font-semibold mb-6">{name}</h1>
         <h1 className="pl-3 text-xs sm:text-base">{description}</h1>
       </div>
