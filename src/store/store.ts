@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { modeReducer } from "./reducers";
+import { modeReducer, userReducer } from "./reducers";
 
 export const appStore = configureStore({
   reducer: {
     mode: modeReducer,
+    user: userReducer,
   },
   // middleware: getDefaultMiddleware({
   //   serializableCheck: false,

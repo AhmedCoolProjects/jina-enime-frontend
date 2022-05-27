@@ -1,7 +1,8 @@
-import { Button, Grid, IconButton } from "@mui/material";
+import { Grid, IconButton } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { MdPostAdd } from "react-icons/md";
 import {
   CarouselHeader,
@@ -12,10 +13,18 @@ import { useAppSelector } from "../src/store";
 
 const Home: NextPage = () => {
   const isDark = useAppSelector((state) => state.mode.isDark);
+  const user = useAppSelector((state) => state.user);
+  const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (!user.token) {
+      router.push("/auth");
+    }
+  }, [router, user]);
 
   return (
     <div>
