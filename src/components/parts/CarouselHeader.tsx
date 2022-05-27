@@ -1,3 +1,6 @@
+// @ts-ignore
+// @ts-nocheck
+
 import { Button, IconButton, Paper } from "@mui/material";
 import { FcPrevious, FcNext } from "react-icons/fc";
 import { useEffect, useState } from "react";
