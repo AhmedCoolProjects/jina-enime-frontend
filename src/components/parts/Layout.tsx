@@ -33,9 +33,8 @@ export function Layout(props: props) {
       dispatch(changeModeAction());
     }
     const token = localStorage.getItem("token");
-    if (token) {
-      appAxios.defaults.headers.common["Authorization"] = `JWT ${token}`;
-      appAxios.post("/student/profile").then((res) => {
+    async function getStudentData(token: string) {
+      await appAxios.post("/student/profile").then((res) => {
         if (res.data) {
           dispatch(
             loginAction({
@@ -45,10 +44,15 @@ export function Layout(props: props) {
               room_number: res.data.room_number,
               token: token,
               _id: res.data._id,
+              email_verified: res.data.email_verified,
             })
           );
         }
       });
+    }
+    if (token) {
+      appAxios.defaults.headers.common["Authorization"] = `JWT ${token}`;
+      getStudentData(token);
     }
   });
 

@@ -7,6 +7,7 @@ interface UserState {
   room_number: string;
   token: string;
   _id: string;
+  email_verified: boolean;
 }
 
 const initialState: UserState = {
@@ -16,6 +17,7 @@ const initialState: UserState = {
   room_number: "",
   token: "",
   _id: "",
+  email_verified: false,
 };
 
 const userSlice = createSlice({
@@ -29,6 +31,7 @@ const userSlice = createSlice({
       state.room_number = action.payload.room_number;
       state.token = action.payload.token;
       state._id = action.payload._id;
+      state.email_verified = action.payload.email_verified;
     },
     logoutAction: (state) => {
       state.first_name = "";
@@ -37,6 +40,7 @@ const userSlice = createSlice({
       state.room_number = "";
       state.token = "";
       state._id = "";
+      state.email_verified = false;
     },
   },
 });
