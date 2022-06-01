@@ -1,7 +1,7 @@
 import { Button, TextField, Container } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { loginAction, useAppDispatch, useAppSelector } from "../../src/store";
 import { useMutation } from "react-query";
@@ -15,6 +15,12 @@ const AuthHome: NextPage = () => {
   const dispatch = useAppDispatch();
   const [isLogin, setIsLogin] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      router.push("/");
+    }
+  }, [router]);
 
   function handleShowSnackbar(variant: VariantType, message: string) {
     enqueueSnackbar(message, { variant });
@@ -67,6 +73,7 @@ const AuthHome: NextPage = () => {
                     room_number: res.data.room_number,
                     token: res.data.token,
                     _id: res.data._id,
+                    email_verified: res.data.email_verified,
                   })
                 );
                 handleShowSnackbar("success", `Welcome ${res.data.first_name}`);
