@@ -6,6 +6,7 @@ interface UserState {
   email: string;
   room_number: string;
   token: string;
+  _id: string;
 }
 
 const initialState: UserState = {
@@ -14,6 +15,7 @@ const initialState: UserState = {
   email: "",
   room_number: "",
   token: "",
+  _id: "",
 };
 
 const userSlice = createSlice({
@@ -26,6 +28,7 @@ const userSlice = createSlice({
       state.email = action.payload.email;
       state.room_number = action.payload.room_number;
       state.token = action.payload.token;
+      state._id = action.payload._id;
     },
     logoutAction: (state) => {
       state.first_name = "";
@@ -33,6 +36,7 @@ const userSlice = createSlice({
       state.email = "";
       state.room_number = "";
       state.token = "";
+      state._id = "";
     },
   },
 });

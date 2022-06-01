@@ -3,12 +3,22 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import Image from "next/image";
-import { useAppSelector } from "../../src/store";
+import { loginAction, useAppDispatch, useAppSelector } from "../../src/store";
+import { useMutation } from "react-query";
+import { appAxios } from "../../src/axios";
+import { useSnackbar, VariantType } from "notistack";
+import { useRouter } from "next/router";
 
 const AuthHome: NextPage = () => {
   const isDark = useAppSelector((state) => state.mode.isDark);
-  const user = useAppSelector((state) => state.user);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const [isLogin, setIsLogin] = useState(true);
+  const { enqueueSnackbar } = useSnackbar();
+
+  function handleShowSnackbar(variant: VariantType, message: string) {
+    enqueueSnackbar(message, { variant });
+  }
   const [userLogin, setUserLogin] = useState({
     email: "",
     password: "",
@@ -34,6 +44,45 @@ const AuthHome: NextPage = () => {
       password: "",
     });
   };
+  const { mutate: mutateStudentLogin, isLoading: isStudentLoginLoading } =
+    useMutation(async () => {
+      return await appAxios
+        .post("/student/login", {
+          email: userLogin.email,
+          password: userLogin.password,
+        })
+        .then(async (res) => {
+          if (res.data) {
+            appAxios.defaults.headers.common[
+              "Authorization"
+            ] = `JWT ${res.data.token}`;
+            localStorage.setItem("token", res.data.token);
+            await appAxios.post("/student/profile").then((res) => {
+              if (res.data) {
+                dispatch(
+                  loginAction({
+                    first_name: res.data.first_name,
+                    last_name: res.data.last_name,
+                    email: res.data.email,
+                    room_number: res.data.room_number,
+                    token: res.data.token,
+                    _id: res.data._id,
+                  })
+                );
+                handleShowSnackbar("success", `Welcome ${res.data.first_name}`);
+                router.replace("/");
+              }
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err.response?.data?.message || err);
+          if (err.response?.data?.message) {
+            handleShowSnackbar("error", err.response.data.message);
+          }
+        });
+    });
+
   return (
     <div>
       <Head>
@@ -172,6 +221,18 @@ const AuthHome: NextPage = () => {
               fullWidth
               variant="outlined"
               color={isDark ? "primary" : "secondary"}
+              onClick={() => {
+                mutateStudentLogin();
+              }}
+              disabled={
+                isLogin
+                  ? !userLogin.email || !userLogin.password
+                  : !userRegister.first_name ||
+                    !userRegister.last_name ||
+                    !userRegister.email ||
+                    !userRegister.room_number ||
+                    !userRegister.password
+              }
             >
               {isLogin ? "Login" : "Register"}
             </Button>

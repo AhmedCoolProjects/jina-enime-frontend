@@ -21,10 +21,11 @@ const Home: NextPage = () => {
   };
 
   useEffect(() => {
-    if (!user.token) {
+    const token = localStorage.getItem("token");
+    if (!token) {
       router.push("/auth");
     }
-  }, [router, user]);
+  }, [router]);
 
   return (
     <div>

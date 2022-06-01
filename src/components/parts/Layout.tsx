@@ -6,8 +6,14 @@ import {
 } from "@mui/material";
 import Head from "next/head";
 import { useEffect, useMemo } from "react";
+import { appAxios } from "../../axios";
 import { THEME } from "../../constants";
-import { changeModeAction, useAppDispatch, useAppSelector } from "../../store";
+import {
+  changeModeAction,
+  loginAction,
+  useAppDispatch,
+  useAppSelector,
+} from "../../store";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 
@@ -25,8 +31,24 @@ export function Layout(props: props) {
     const isDarkLocal = localStorage.getItem("isDark");
     if (isDarkLocal !== null && isDarkLocal !== `${isDark}`) {
       dispatch(changeModeAction());
-      // console.log("appModeLocal", isDarkLocal);
-      // console.log("appMode", isDark);
+    }
+    const token = localStorage.getItem("token");
+    if (token) {
+      appAxios.defaults.headers.common["Authorization"] = `JWT ${token}`;
+      appAxios.post("/student/profile").then((res) => {
+        if (res.data) {
+          dispatch(
+            loginAction({
+              first_name: res.data.first_name,
+              last_name: res.data.last_name,
+              email: res.data.email,
+              room_number: res.data.room_number,
+              token: token,
+              _id: res.data._id,
+            })
+          );
+        }
+      });
     }
   });
 

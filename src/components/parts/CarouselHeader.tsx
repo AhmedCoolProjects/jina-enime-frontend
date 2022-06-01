@@ -145,7 +145,13 @@ function CarouselItem(props: carouselItemProps) {
         <h1 className="text-md sm:text-3xl font-semibold mb-6">{name}</h1>
         <h1 className="pl-3 text-xs sm:text-base">{description}</h1>
       </div>
-      <Image src={image} width={500} objectFit="contain" alt="image" />
+      <Image
+        priority={true}
+        src={image}
+        width={500}
+        objectFit="contain"
+        alt="image"
+      />
     </Paper>
   );
 }

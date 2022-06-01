@@ -5,23 +5,28 @@ import { useState } from "react";
 import { changeModeAction, useAppDispatch, useAppSelector } from "../../store";
 import { BsMoonStars } from "react-icons/bs";
 import { BsSun } from "react-icons/bs";
-import { FiMenu } from "react-icons/fi";
+import { FiMenu, FiUser } from "react-icons/fi";
+import { PopperProfile } from "../dialogs";
 
 export function Header() {
   const dispatch = useAppDispatch();
   const isDark = useAppSelector((state) => state.mode.isDark);
+  const user = useAppSelector((state) => state.user);
   const toggleTheme = () => {
     dispatch(changeModeAction());
     localStorage.setItem("isDark", `${!isDark}`);
   };
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+  // Popper
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [open, setOpen] = useState(false);
+  const handleOpenPopper = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
+    setOpen(!open);
   };
-  const handleCloseMenu = () => {
+  function handleClosePopper() {
     setAnchorEl(null);
-  };
+    setOpen(false);
+  }
 
   return (
     <Paper
@@ -43,6 +48,17 @@ export function Header() {
         </div>
       </Link>
       <div className="flex flex-row items-center space-x-2">
+        {user._id !== "" ? (
+          <div
+            style={{
+              display: "inline-block",
+            }}
+          >
+            <IconButton onClick={handleOpenPopper}>
+              <FiUser color={isDark ? "#ffff00" : "#1544ed"} />
+            </IconButton>
+          </div>
+        ) : null}
         <div
           style={{
             display: "inline-block",
@@ -56,7 +72,7 @@ export function Header() {
             )}
           </IconButton>
         </div>
-        <div className="md:hidden">
+        {/* <div className="md:hidden">
           <IconButton
             aria-controls={open ? "menu-id" : undefined}
             aria-haspopup="true"
@@ -66,37 +82,13 @@ export function Header() {
           >
             <FiMenu color={isDark ? "#ffff00" : "#1544ed"} />
           </IconButton>
-        </div>
+        </div> */}
       </div>
-      {/* <PopMenu
-        anchorEl={anchorEl}
-        onClose={handleCloseMenu}
-        id="menu-id"
+      <PopperProfile
+        onClose={() => handleClosePopper()}
         open={open}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        items={[
-          {
-            label: "Dashboard",
-            href: "/",
-          },
-          {
-            label: "Projects",
-            href: "/projects",
-          },
-          {
-            label: "Certificates",
-            href: "/certificates",
-          },
-        ]}
-        buttonId="menu-button-id"
-      /> */}
+        anchorEl={anchorEl}
+      />
     </Paper>
   );
 }
